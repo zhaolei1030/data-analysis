@@ -3,19 +3,17 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
-
 from sklearn.cross_validation import train_test_split
 from sklearn.linear_model import LogisticRegressionCV
 import keras
 from keras.models import Sequential
-from keras.layers.core import Dense, Activation
+from keras.layers import Dense, Activation, LSTM, Dropout
 from keras.utils import np_utils
-
 import time
 # fix random seed for reproducibility
 seed = 9
 np.random.seed(seed)
-data = np.loadtxt(open("D:\work(finance)\doc2vec_model\position_test(100).csv","rb"),delimiter=",",skiprows=0)
+data = np.loadtxt(open("path\position_test(100).csv","rb"),delimiter=",",skiprows=0)
 x = data[:,0:100]
 y = data[:,100]
 print(data.shape)
@@ -33,15 +31,25 @@ def one_hot_encode_object_array(arr):
 train_y_ohe = one_hot_encode_object_array(train_y)
 test_y_ohe = one_hot_encode_object_array(test_y)
 model = Sequential()
-model.add(Dense(88, input_shape=(100,)))
+model.add(LSTM(50, input_shape=(train_X.shape[1], train_X.shape[2])))
+model.add(Dense(128, input_shape=(100,)))
+model.add(Dropout(0.2))
 model.add(Activation('sigmoid'))
+model.add(LSTM(25, input_shape=(train_X.shape[1], train_X.shape[2])))
 model.add(Dense(64))
+model.add(Dropout(0.2))
 model.add(Activation('sigmoid'))
+model.add(LSTM(15, input_shape=(train_X.shape[1], train_X.shape[2])))
 model.add(Dense(49))
+model.add(Dropout(0.2))
 model.add(Activation('sigmoid'))
+model.add(LSTM(10, input_shape=(train_X.shape[1], train_X.shape[2])))
 model.add(Dense(16))
+model.add(Dropout(0.2))
 model.add(Activation('sigmoid'))
+model.add(LSTM(5, input_shape=(train_X.shape[1], train_X.shape[2])))
 model.add(Dense(1))
+model.add(Dropout(0.2))
 model.add(Activation('sigmoid'))
 model.compile(loss='binary_crossentropy', optimizer = keras.optimizers.Adam(lr=0.0001, epsilon=1e-08), metrics=['accuracy'])
 # model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
