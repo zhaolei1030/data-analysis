@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简历系统</title>
+</head>
+<body>
+    <h1>简历系统</h1>
+<table>
+	
+        <tr>
+            <td>id</td>
+            <td>job</td>
+
+        </tr>
+        {%for i in list%}
+        <tr>
+            <td><a href="#">{{i["_id"]}}</a></td>
+            <td><a>{{i["job_location"]}}</a></td>
+
+        </tr>
+        {% end%}
+    </table>
+
+</body>
+</html>

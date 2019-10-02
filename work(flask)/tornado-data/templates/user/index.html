@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <style>
+            .all {
+                width: 100%;
+                height: 100%;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+            }
+            .center {
+                width: 50%;
+                padding:25px;
+                height: auto;
+                border: 1px solid white;
+            }
+            .center-two{
+                width: 98%;
+                height: 150px;
+                margin-top: 30px;
+                padding:10px;
+                border: 1px solid wheat;
+            }
+            .center-three{
+                display:inline;
+                width:auto;
+                height: 30px;
+                border: 1px solid salmon;
+                margin-left: 10px;
+
+            }
+            .center-four {
+                width:100%;
+                height: 300px;
+                margin-top: 20px;
+                word-wrap: break-word;
+                border: 1px solid white;
+            }
+            span[class^="bgc-"]{
+                cursor: pointer;
+            }
+            .bgc-red{
+                background-color: lightcoral;
+            }
+            .bgc-green{
+                background-color: greenyellow;
+            }
+            .bgc-blue{
+                background-color: deepskyblue;
+            }
+            .center-five{
+                height: 50px;
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="all">
+            <div class="center">
+                <div class="center-two">
+                    &nbsp;&nbsp;{{ infoWords }}
+
+                    <div class="center-four">
+                    {% for my_tag in tags %}
+                        <div class="center-three">
+                        {% if my_tag["tag"] == 1 %}
+                            <span class="bgc-red">
+                                {{my_tag["word"]}}
+                            </span>
+                        {% else %}
+                            <span class="bgc-empty">
+                                {{my_tag["word"]}}
+                            </span>
+                        {% end %}
+                        </div>
+                    {% end %}
+
+                     </div>
+                </div>
+                <div class="center-five">
+                        <form method="post" action="/handler">
+                            <input type="hidden" type="text" name="ret" id="m-green">
+                            <input type="hidden" type="text" name="infoid" value="{{infoid}}">
+                            <input type="submit" style="width: 60px;height: 40px;background: burlywood;margin-left:10px">
+                        </form>
+                     </div>
+            </div>
+            <div class="bottom">
+                <form action="/next" method="post">
+                    <input type="hidden" name="infoid" value="{{infoid}}">
+                    <input type="submit" value="下一个">
+                </form>
+                <form action="/last" method="post">
+                    <input type="hidden" name="infoid" value="{{infoid}}">
+                    <input type="submit" value="上一个">
+                </form>
+            </div>
+        </div>
+
+
+    <script>
+    // console.log(document.querySelectorAll('span[class^="bgc-"]'))
+    const colors = ['bgc-red', 'bgc-green', 'bgc-blue', 'bgc-red']
+    const capture = () => {
+            let ret = ''
+            // red
+            let tagRed = []
+            document.querySelectorAll('span[class="bgc-red"]').forEach(e => {
+                tagRed.push(e.innerText)
+            })
+            // green
+            let tagGreen = []
+            document.querySelectorAll('span[class="bgc-green"]').forEach(e => {
+                tagGreen.push(e.innerText)
+            })
+            // blue
+            let tagBlue = []
+            document.querySelectorAll('span[class="bgc-blue"]').forEach(e => {
+                tagBlue.push(e.innerText)
+            })
+            ret = `tag_red='${tagRed.join('%')}'~tag_green='${tagGreen.join('%')}'~tag_blue='${tagBlue.join('%')}'`
+            document.querySelector('#m-green').value = ret
+            console.log(ret)
+        }
+        capture()
+    document.querySelectorAll('span[class^="bgc-"]').forEach(v => {
+        if (v.className === 'bgc-empty') {
+            v.addEventListener('click', (e) => {
+                let clsName = e.toElement.className
+                e.toElement.className = clsName === 'bgc-empty' ? 'bgc-blue' : 'bgc-empty'
+                capture()
+            })
+        } else {
+            v.addEventListener('click', (e) => {
+                let clsName = e.toElement.className
+                // console.log(colors, clsName, ['bgc-red', 'bgc-green', 'bgc-blue', 'bgc-red'].indexOf['bgc-red'])
+                e.toElement.className = colors[colors.indexOf(clsName) + 1] // clsName === 'bgc-red' ? 'bgc-green' : 'bgc-red'
+                capture()
+            })
+        }
+    })
+    // document.querySelector('#m-btn').addEventListener('click', () => {
+    //     let ret = []
+    //     document.querySelectorAll('span[class="bgc-green"]').forEach(e => {
+    //         ret.push(e.innerText)
+    //     })
+    //     document.querySelector('#m-green').value = ret.join('%')
+    // })
+</script>
+    </body>
+</html>
+
+
