@@ -49,19 +49,19 @@ def fit_train_data(train_li, feat_li):
     print(len(feat_li))
     print(feat_li)
 
-    # model = SVC(kernel='linear', C=100)
-    # model.fit(X=train_li, y=feat_li)
-    # joblib.dump(model, "./data/model/train_model.model")
-    #
-    # # 检验结果的准确率：通过预测训练集
-    # # y_pred = model.predict(train_li)
-    # # print('多输出多分类器预测输出分类:\n', y_pred)
-    # # n = 0
-    # # for i in range(len(feat_li)):
-    # #     if feat_li[i] == y_pred[i]:
-    # #         n += 1
-    # # print(n)
-    # # print(float(n / len(feat_li)))
+    model = SVC(kernel='linear', C=100)
+    model.fit(X=train_li, y=feat_li)
+    joblib.dump(model, "./data/model/train_model.model")
+    
+    # 检验结果的准确率：通过预测训练集
+    # y_pred = model.predict(train_li)
+    # print('多输出多分类器预测输出分类:\n', y_pred)
+    # n = 0
+    # for i in range(len(feat_li)):
+    #     if feat_li[i] == y_pred[i]:
+    #         n += 1
+    # print(n)
+    # print(float(n / len(feat_li)))
 
 
 def profession_predict(name):
